@@ -85,11 +85,4 @@ export default {
 </script>
 
 <style lang="scss">
-.test {
-	color: $yellow;
-	padding: 15px;
-	span {
-		font-weight: bold;
-	}
-}
 </style>
