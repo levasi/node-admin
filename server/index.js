@@ -23,14 +23,12 @@ const posts = require('./routes/api/posts')
 app.use('/api/posts', posts)
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(__dirname + '/public/'))
-
-    app.get('/.*/', (req, res) => {
-        res.sendFile(__dirname + '/public/index.html')
-    })
+    app.use(express.static(__dirname + '/public/'));
+    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 }
 
+const port = process.env.PORT || 3000
 
-app.listen(3000, (req, res) => {
+app.listen(port, (req, res) => {
     console.log('Running on 3000')
 })
