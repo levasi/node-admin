@@ -18,6 +18,10 @@ mongoose.connect(uri, {
     console.log(error);
 })
 
+const posts = require('./routes/api/posts')
+
+app.use('/api/posts', posts)
+
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/public/'))
 
@@ -26,9 +30,6 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-const posts = require('./routes/api/posts')
-
-app.use('/api/posts', posts)
 
 app.listen(3000, (req, res) => {
     console.log('Running on 3000')
