@@ -1,37 +1,56 @@
 <template>
-	<div class="posts-wrapper">
-		<div class="posts-form">
-			<input v-model="text" type="text" />
-			<button @click="createPost">Add Post</button>
-			<BButton block variant="success">Block Level Button</BButton>
-			<div class="test">
-				test
-				<span>one two</span>
-			</div>
-			<h4>
-				<BBadge>New</BBadge>
-			</h4>
-		</div>
-		<div class="posts">
-			<div class="post" v-for="(post, index) in posts" :key="index">
-				<h4>{{post.title}}</h4>
-				<p class="post-content">{{post.content}}</p>
-				<button @click="deletePost(post._id)">delete</button>
-			</div>
-		</div>
-	</div>
+	<b-container class="bv-example-row">
+		<b-row>
+			<b-col></b-col>
+			<b-col>
+				<b-form-group class="d-flex">
+					<b-form-input @keydown.enter="createPost" v-model="text" placeholder="Enter titile"></b-form-input>
+					<b-button @click="createPost" block variant="success">Post</b-button>
+				</b-form-group>
+			</b-col>
+			<b-col></b-col>
+		</b-row>
+		<b-row>
+			<b-col>
+				<b-card-group>
+					<b-card
+						v-for="(post, index) in posts"
+						:key="index"
+						:title="post.title"
+						header-tag="header"
+						footer-tag="footer"
+					>
+						<b-card-text>{{post.content}}</b-card-text>
+						<template v-slot:footer>
+							<b-button size="sm" @click="deletePost(post._id)" variant="danger">remove</b-button>
+						</template>
+					</b-card>
+				</b-card-group>
+			</b-col>
+		</b-row>
+	</b-container>
 </template>
 
 <script>
 import PostService from "../postService.js";
-import { BBadge } from "bootstrap-vue";
-import { BButton } from "bootstrap-vue";
+import {
+	BBadge,
+	BButton,
+	BFormInput,
+	BFormGroup,
+	BCard,
+	BCardGroup
+} from "bootstrap-vue";
 
 export default {
 	name: "posts",
 	pluggins: {
-		BBadge,
-		BButton
+		"b-badge": BBadge,
+		"b-button": BButton,
+		"b-form-input": BFormInput,
+		"b-form-group": BFormGroup,
+		"b-card": BCard,
+		"b-card-group": BCardGroup
 	},
 	props: {},
 	data() {
@@ -46,6 +65,7 @@ export default {
 			await PostService.insertPost(this.text);
 			const postsData = await PostService.getPosts();
 			this.posts = postsData.posts;
+			this.text = null;
 		},
 		async deletePost(id) {
 			await PostService.deletePost(id);
@@ -66,9 +86,9 @@ export default {
 
 <style lang="scss">
 .test {
+	color: $yellow;
 	padding: 15px;
 	span {
-		color: green;
 		font-weight: bold;
 	}
 }
